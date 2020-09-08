@@ -27,5 +27,10 @@ type Request interface {
 // newRequest creates an HTTP request.
 //
 func newRequest(method, path string, body io.Reader) (*http.Request, error) {
-	return http.NewRequest(method, path, body)
+	req, err := http.NewRequest(method, path, body)
+	if err != nil {
+		return nil, err
+	}
+	req.URL.RawPath = path
+	return req, nil
 }

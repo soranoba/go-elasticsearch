@@ -34,6 +34,12 @@ func TestAPIRequest(t *testing.T) {
 			t.Errorf("Unexpected URL %s, want /foo", req.URL)
 		}
 
+		// ref: https://www.elastic.co/guide/en/elasticsearch/reference/current/date-math-index-names.html
+		req, err = newRequest("GET", "/%3Cmy-index-%7Bnow%2Fd%7D%3E", nil)
+		if req.URL.String() != "/%3Cmy-index-%7Bnow%2Fd%7D%3E" {
+			t.Errorf("Unexpected URL %s, want %s", req.URL, "/%3Cmy-index-%7Bnow%2Fd%7D%3E")
+		}
+
 		body = `{"foo":"bar"}`
 		req, err = newRequest("GET", "/foo", strings.NewReader(body))
 		if err != nil {
